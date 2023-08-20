@@ -1,4 +1,4 @@
-import random
+import random, time
 
 class RPS():
     # Rock Paper Scissors: The Game!
@@ -68,3 +68,27 @@ class NumberGuesser():
             comparison  = 2 if diff == 1 else (1 if self.user_input > self.ai_output else 0)
             self.tries(comparison)
         print (f'Thanks for playing! It took you {self.try_count + 1} tries to guess {self.ai_output} correctly.')
+
+
+class PigDice():
+    # Pig Dice. Two players try to score 30 through rolling dice, but if they roll a 1 they have to start over.
+    def __init__(self):
+        # user: [0], ai: [1]
+        self.scores = [0, 0]
+
+    def dice_roll(self, player):
+        roll = random.randint(1, 6)
+        self.scores[player] = 0 if roll == 1 else self.scores[player] + roll
+        return f'{"You" if player == 0 else "The AI"} rolled a {roll}. Score: {self.scores[player]}'
+
+    def game(self):
+        print('Welcome to Pig Dice!')
+        print('To win, you need to roll the dice against the AI until either of you reach 30 in total.')
+        print('But if you roll 1, you have to start over.')
+        while all(score < 30 for score in self.scores):
+            user_input = input('Type any key to roll the dice...')
+            print(self.dice_roll(0)); time.sleep(1)
+            if self.scores[0] >= 30: break
+            print(self.dice_roll(1))
+        winner = 'You' if self.scores[0] >= 30 else 'The AI'
+        print(f'{winner} won! Your score: {self.scores[0]}. AI\'s score: {self.scores[1]}.')
